@@ -2,7 +2,7 @@ import React from 'react'
 
 const UserNotFound = () => {
   return (
-    <div>User not found!!!</div>
+    <div>This user doesn&apos;t exist.</div>
   )
 }
 
