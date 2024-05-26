@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import prisma from "@/prisma/client";
 
-export function GET(
+export async function GET(
   request: NextRequest,
-  { params }: { params: { id: number } }
+  { params }: { params: { id: string } }
 ) {
-  if (params.id > 10) {
+  const user = await prisma.user.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  if (!user) {
     return NextResponse.json({ error: "User not found!" }, { status: 404 });
   }
-  return NextResponse.json({ id: 1, name: "Richard Tamil" });
+  return NextResponse.json(user);
 }
 
 export async function PUT(
@@ -27,13 +32,13 @@ export async function PUT(
   return NextResponse.json({ id: 1, name: body.name }, { status: 201 });
 }
 
-export  async function DELETE( request: NextRequest,
-  { params }: { params: { id: number } }) {
-    if(params.id > 10) {
-      return NextResponse.json({error: "User not Found!"}, {status: 404})
-    }
-
-
-    return NextResponse.json({})
-
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: { id: number } }
+) {
+  if (params.id > 10) {
+    return NextResponse.json({ error: "User not Found!" }, { status: 404 });
   }
+
+  return NextResponse.json({});
+}
